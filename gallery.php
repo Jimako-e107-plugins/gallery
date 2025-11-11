@@ -10,7 +10,7 @@
  * @file
  * Render gallery pages.
  */
-
+ 
 require_once(__DIR__.'/../../class2.php');
 
 if(!e107::isInstalled('gallery'))
@@ -37,7 +37,6 @@ if (!class_exists('plugin_gallery_index_controller') && !deftrue('e_PAGETITLE'))
 
 require_once(HEADERF);
 
-
 /**
  * Class gallery.
  */
@@ -50,9 +49,21 @@ class gallery
 	{
 		$this->catList = e107::getMedia()->getCategories('gallery');
 
+		/* conversion between media category and media cat sef url */
+		$newArray = [];
+
+		foreach ($this->catList as $item)
+		{
+			$key = $item['media_cat_sef'];
+			$newArray[$key] = $item;
+		}
+
+		$this->catList = $newArray;
+ 
 		if((vartrue($_GET['cat'])) && isset($this->catList[$_GET['cat']]))
 		{
-			$this->showImages($_GET['cat']);
+			$cat = $this->catList[$_GET['cat']];
+			$this->showImages($cat);
 		}
 		else
 		{
@@ -93,7 +104,6 @@ class gallery
 	function listCategories()
 	{
 
-
 		$template = $this->getTemplate();
 		$template = array_change_key_case($template);
 		$sc = e107::getScBatch('gallery', true);
@@ -121,8 +131,10 @@ class gallery
 	}
 
 
-	function showImages($cat)
+	function showImages($gallery = NULL)
 	{
+
+		$cat = $gallery['media_cat_category'];
 		$plugPrefs = e107::getPlugConfig('gallery')->getPref();
 		$mes = e107::getMessage();
 		$tp = e107::getParser();
@@ -135,21 +147,37 @@ class gallery
 			$template['list_start'] = str_replace('row', 'row-fluid', $template['list_start']);
 		}
 
-		$sc->total = e107::getMedia()->countImages($cat);
-		$sc->amount = varset($plugPrefs['perpage'], 12);
-		$sc->curCat = $cat;
-		$sc->from = ($_GET['frm']) ? intval($_GET['frm']) : 0;
+		$totalImages = e107::getMedia()->countImages($cat);
+		$perPage     = max(1, varset($plugPrefs['perpage'], 12));
+		// 1-based page number
+		$currentPage = max(1, intval($_GET['page'] ?? 1));
+
+		// SQL offset
+		$offset = ($currentPage - 1) * $perPage;
+
+		// values for shortcode
+		$sc->total   = $totalImages;                 // total RECORDS (used only for calculating pages internally)
+		$sc->amount  = $perPage;
+		$sc->page    = $currentPage;                 // <-- important for your own shortcode
+		$sc->from    = $offset;                      // <-- correct offset for getImages()
+
+
+		// $sc->total = e107::getMedia()->countImages($cat);
+		// $sc->amount = varset($plugPrefs['perpage'], 12);
+		// $sc->curCat = $cat;
+		// $sc->from = ($_GET['page']) ? intval($_GET['page']) : 0;
 		$sc->breadcrumb();
 
 		$orderBy = varset($plugPrefs['orderby'], 'media_id DESC');
 
 		$list = e107::getMedia()->getImages($cat, $sc->from, $sc->amount, null, $orderBy);
 		$catname = $tp->toHTML($this->catList[$cat]['media_cat_title'], false, 'defs');
-
+ 
 		$inner = "";
-
+		
 		foreach($list as $row)
 		{
+			$row['media_cat_sef'] = $gallery['media_cat_sef'];
 			$sc->setVars($row);
 			$inner .= $tp->parseTemplate($template['list']['item'], true, $sc);
 		}
@@ -170,4 +198,3 @@ class gallery
 new gallery;
 
 require_once(FOOTERF);
-
