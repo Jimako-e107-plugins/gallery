@@ -298,13 +298,7 @@ class gallery_cat_admin_ui extends e_admin_ui
 			'data'  => 'int',
 			'help'  => LAN_GALLERY_ADMIN_07,
 		),
-		'downloadable'               => array(
-			'title' => LAN_GALLERY_ADMIN_08,
-			'tab'   => 0,
-			'type'  => 'boolean',
-			'data'  => 'int',
-			'help'  => LAN_GALLERY_ADMIN_09,
-		),
+
 		'slideshow_category'         => array(
 			'title' => LAN_GALLERY_ADMIN_10,
 			'tab'   => 1,

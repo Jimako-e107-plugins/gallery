@@ -28,7 +28,7 @@ class gallery_url // plugin-folder + '_url'
 		$config['gallery'] = array(
 			'regex'			=> '^^gallery(?:\/([\w-]+))?(?:\/)?(?:\?.*)?$', 						// matched against url, and if true, redirected to 'redirect' below.
 			'alias'         => 'gallery',
-			'sef'			=> '{alias}/{media_cat_sef}', 							// used by e107::url(); to create a url from the db table.
+			'sef'			=> '{alias}/{gallery_sef}/', 							// used by e107::url(); to create a url from the db table.
 			'redirect'		=> '{e_PLUGIN}gallery/gallery.php?cat=$1$2'
 		);
 
@@ -36,7 +36,7 @@ class gallery_url // plugin-folder + '_url'
 		$config['index'] = array(
 		 	'regex'			=> '^gallery/?$', 						// matched against url, and if true, redirected to 'redirect' below.
 			'alias'         => 'gallery',
-			'sef'			=> '{alias}', 							// used by e107::url(); to create a url from the db table.
+			'sef'			=> '{alias}/', 							// used by e107::url(); to create a url from the db table.
 			'redirect'		=> '{e_PLUGIN}gallery/gallery.php' 
 		);
 

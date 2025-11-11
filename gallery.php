@@ -47,18 +47,8 @@ class gallery
 
 	function __construct()
 	{
-		$this->catList = e107::getMedia()->getCategories('gallery');
-
-		/* conversion between media category and media cat sef url */
-		$newArray = [];
-
-		foreach ($this->catList as $item)
-		{
-			$key = $item['media_cat_sef'];
-			$newArray[$key] = $item;
-		}
-
-		$this->catList = $newArray;
+		 
+		$this->catList =  e107::getDb()->retrieve('gallery', "*", "`gallery_active`=1", true, 'gallery_sef');
  
 		if((vartrue($_GET['cat'])) && isset($this->catList[$_GET['cat']]))
 		{
@@ -80,24 +70,6 @@ class gallery
 	{
 		$template = e107::getTemplate('gallery');
 
-		$oldKeys = array(
-			'list_start', 'list_item', 'list_caption', 'list_end',
-			'cat_start', 'cat_item', 'cat_caption', 'cat_end'
-		);
-
-		if(isset($template['list_start']))
-		{
-			foreach($oldKeys as $k)
-			{
-				list($main,$sub) = explode("_",$k);
-				$template[$main][$sub] = $template[$k];
-				unset($template[$k]);
-
-			}
-
-
-		}
-
 		return $template;
 	}
 
@@ -109,12 +81,7 @@ class gallery
 		$sc = e107::getScBatch('gallery', true);
 
 		$sc->breadcrumb();
-
-		if(defset('BOOTSTRAP') === true || defset('BOOTSTRAP') === 2) // Convert bootstrap3 to bootstrap2 compat.
-		{
-			$template['cat_start'] = str_replace('row', 'row-fluid', $template['cat_start']);
-		}
-
+ 
 		$text = e107::getParser()->parseTemplate($template['cat']['start'], true, $sc);
 
 		foreach($this->catList as $val)

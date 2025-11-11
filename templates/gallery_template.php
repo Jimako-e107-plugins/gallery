@@ -9,7 +9,7 @@
  * Templates for "gallery" plugin.
  */
 
-$GALLERY_TEMPLATE['list']['caption'] = LAN_PLUGIN_GALLERY_TITLE;
+$GALLERY_TEMPLATE['list']['caption'] = '{GALLERY_CAPTION}';
 
 $GALLERY_TEMPLATE['list']['start'] = '{GALLERY_BREADCRUMB}
 <div class="row gallery gx-3">
@@ -18,9 +18,9 @@ $GALLERY_TEMPLATE['list']['start'] = '{GALLERY_BREADCRUMB}
 $GALLERY_TEMPLATE['list']['item'] = '
 	<div class="span2 col-xs-6 col-md-4">
 		<div class="card h-100 thumbnail">
-			{GALLERY_THUMB: w=300&h=200&class=card-img-top img-fluid img-responsive}
+			{GALLERY_IMAGE_THUMB: w=300&h=200&class=card-img-top img-fluid img-responsive}
 			<div class="card-footer">
-			<h5>{GALLERY_CAPTION}</h5>
+			<h5>{GALLERY_IMAGE_CAPTION}</h5>
 			</div>
 		</div>
 	</div>
@@ -37,7 +37,7 @@ $GALLERY_TEMPLATE['list']['end'] = '
 ';
 
 // Bootstrap3 Compatible.
-$GALLERY_TEMPLATE['cat']['caption'] = LAN_PLUGIN_GALLERY_TITLE;
+$GALLERY_TEMPLATE['cat']['caption'] = '{GALLERY_CAPTION}';
 
 $GALLERY_TEMPLATE['cat']['start'] = '{GALLERY_BREADCRUMB}
 <div class="row gallery-cat gx-3">
@@ -193,7 +193,7 @@ $GALLERY_TEMPLATE['prettyphoto']['social_item'] = '
 /*
 
 $GALLERY_TEMPLATE['portfolio']['start']     = '<-- start portfolio -->';
-$GALLERY_TEMPLATE['portfolio']['item']      = '<img src="{GALLERY_THUMB: w=1080&h=720&thumbsrc}" class="img-responsive" alt="{GALLERY_CAPTION=text}">';
+$GALLERY_TEMPLATE['portfolio']['item']      = '<img src="{GALLERY_IMAGE_THUMB: w=1080&h=720&thumbsrc}" class="img-responsive" alt="{GALLERY_IMAGE_CAPTION=text}">';
 $GALLERY_TEMPLATE['portfolio']['end']       = '<-- end portfolio -->';
 
 */

@@ -27,6 +27,8 @@ class gallery_shortcodes extends e_shortcode
 	public  $slideMode    = false;
 	public  $slideCount   = 1;
 	private $attFull      = null;
+	private $plugPref     = null;
+	
 
 	function init()
 	{
@@ -35,6 +37,7 @@ class gallery_shortcodes extends e_shortcode
 		$pop_w = vartrue($prefW, 1024);
 		$pop_h = vartrue($prefH, 768);
 		$this->attFull = array('w' => $pop_w, 'h' => $pop_h, 'x' => 1, 'crop' => 0); // 'w='.$pop_w.'&h='.$pop_h.'&x=1';
+		$this->plugPref = e107::getPlugConfig('gallery')->getPref();
 	}
 
 	function breadcrumb()
@@ -43,19 +46,18 @@ class gallery_shortcodes extends e_shortcode
 
 		$template = e107::getTemplate('gallery', 'gallery', 'cat');
 
-		$caption = isset($template['caption']) ? e107::getParser()->toText($template['caption']) : LAN_PLUGIN_GALLERY_TITLE;
-		if(!empty($this->var))
+		$caption = $this->sc_gallery_caption(array('force'=>true));
+		
+		if(true)
 		{
-			$breadcrumb[] = array('text' => $caption, 'url' => e107::url('gallery', 'gallery', $this->var));
+			$breadcrumb[] = array('text' => $caption, 'url' => e107::url('gallery', 'index', $this->var));
 		}
 
 		if(vartrue($this->curCat))
 		{
 			$breadcrumb[] = array('text' => $this->sc_gallery_cat_title('title'), 'url' => e107::url('gallery', 'index', $this->var));
 		}
-
-		//var_dump($breadcrumb);
-
+ 
 		e107::breadcrumb($breadcrumb);
 	}
 
@@ -63,7 +65,7 @@ class gallery_shortcodes extends e_shortcode
 
 
 
-	function sc_gallery_caption($parm = '')
+	function sc_gallery_image_caption($parm = '')
 	{
 		$tp = e107::getParser();
 
@@ -77,7 +79,7 @@ class gallery_shortcodes extends e_shortcode
 		// Load prettyPhoto settings and files.
 		gallery_load_prettyphoto();
 
-		$plugPrefs = e107::getPlugConfig('gallery')->getPref();
+		$plugPrefs = $this->plugPref;
 		$hook = varset($plugPrefs['pp_hook'], 'data-gal');
 
 		$text = "<a class='gallery-caption' title='" . $tp->toAttribute($this->var['media_caption']) . "' href='" . $tp->thumbUrl($this->var['media_url'], $this->attFull) . "' " . $hook . "='prettyPhoto[slide]' >";     // Erase  rel"lightbox.Gallery2"  - Write "prettyPhoto[slide]"
@@ -96,12 +98,32 @@ class gallery_shortcodes extends e_shortcode
 
 	function sc_gallery_breadcrumb($parm = '')
 	{
-	//	$this->breadcrumb();
-
+	 	$this->breadcrumb();
+ 
 		$breadcrumb = e107::breadcrumb();
-
-		return e107::getForm()->breadcrumb($breadcrumb);
+		
+		$force = varset($this->plugPref['display_breadcrumbs'], false);
+		return e107::getForm()->breadcrumb($breadcrumb, $force );
 	}
+
+
+	function sc_gallery_caption($parm = '') 
+	{
+		$display_title = $this->plugPref["display_title"];
+		if($parm['force']) $display_title = true;
+
+		if(vartrue($this->curCat)) {
+
+			$caption = $this->plugPref['page_title'] ?: LAN_PLUGIN_GALLERY_TITLE;
+			$caption .= ": ";
+			$caption .= $this->sc_gallery_cat_title('title');
+
+		} 
+		else {
+			$caption = $this->plugPref['page_title'] ?: LAN_PLUGIN_GALLERY_TITLE;
+		}
+		return $caption ;
+	} 
 
 	/**
 	 * All possible parameters
@@ -112,13 +134,13 @@ class gallery_shortcodes extends e_shortcode
 	 * imageurl - full path to the destination image (no proxy)
 	 * actualPreview - large preview will use the original path to the image (no proxy)
 	 */
-	function sc_gallery_thumb($parm = '')
+	function sc_gallery_image_thumb($parm = '')
 	{
 		e107_require_once(e_PLUGIN . 'gallery/includes/gallery_load.php');
 		// Load prettyPhoto settings and files.
 		gallery_load_prettyphoto();
 		
-		$plugPrefs = e107::getPlugConfig('gallery')->getPref();
+		$plugPrefs = $this->plugPref;
 		$hook = varset($plugPrefs['pp_hook'], 'data-gal');
 
 		$tp = e107::getParser();
@@ -171,10 +193,10 @@ class gallery_shortcodes extends e_shortcode
 		$url = e107::url('gallery', 'gallery', $this->var);
 		if($parm == 'title')
 		{
-			return $tp->toHTML($this->var['media_cat_title'], false, 'TITLE');
+			return $tp->toHTML($this->var['gallery_title'], false, 'TITLE');
 		}
 		$text = "<a href='" . $url . "'>";
-		$text .= $tp->toHTML($this->var['media_cat_title'], false, 'TITLE');
+		$text .= $tp->toHTML($this->var['gallery_title'], false, 'TITLE');
 		$text .= "</a>";
 		return $text;
 	}
@@ -184,10 +206,16 @@ class gallery_shortcodes extends e_shortcode
 		return e107::url('gallery', 'gallery', $this->var);
 	}
 
+		function sc_gallery_cat_summary($parm = '')
+	{
+		$tp = e107::getParser();
+		return $tp->toHTML($this->var['gallery_summary'], true, 'BODY');
+	}
+
 	function sc_gallery_cat_description($parm = '')
 	{
 		$tp = e107::getParser();
-		return $tp->toHTML($this->var['media_cat_diz'], true, 'BODY');
+		return $tp->toHTML($this->var['gallery_description'], true, 'BODY');
 	}
 
 	function sc_gallery_baseurl()
@@ -207,11 +235,11 @@ class gallery_shortcodes extends e_shortcode
 
 		if(isset($parms['thumbsrc']))
 		{
-			return e107::getParser()->thumbUrl($this->var['media_cat_image'], $att);
+			return e107::getParser()->thumbUrl($this->var['gallery_image'], $att);
 		}
 
 		$text = "<a class='thumbnail' href='" . $url . "'>";
-		$text .= "<img class='".$class."' data-src='holder.js/" . $w . "x" . $h . "' src='" . e107::getParser()->thumbUrl($this->var['media_cat_image'], $att) . "' alt='' />";
+		$text .= "<img class='".$class."' data-src='holder.js/" . $w . "x" . $h . "' src='" . e107::getParser()->thumbUrl($this->var['gallery_image'], $att) . "' alt='' />";
 		$text .= "</a>";
 		return $text;
 	}
@@ -233,7 +261,7 @@ class gallery_shortcodes extends e_shortcode
 
 	function sc_gallery_slideshow($parm = '')
 	{
-		$slideCat = e107::getPlugPref('gallery', 'slideshow_category');
+		$slideCat = $this->plugPref['slideshow_category'];
 		$this->sliderCat = ($parm) ? $parm : vartrue($slideCat, 1);
 
 		$tmpl = e107::getTemplate('gallery', 'gallery');
@@ -253,13 +281,13 @@ class gallery_shortcodes extends e_shortcode
 		$ns = e107::getRender();
 		$tp = e107::getParser();
 	//	$parm = eHelper::scParams($parms);
-		$slideCat = e107::getPlugPref('gallery', 'slideshow_category');
+		$slideCat = $this->plugPref['slideshow_category'];
 		$cat = (!empty($parm['category'])) ? $parm['category'] : vartrue($slideCat, false); //TODO Separate pref?
 
 		$tmpl = e107::getTemplate('gallery', 'gallery');
 		$limit = vartrue($parm['limit'], 6);
 
-		$plugPrefs = e107::getPlugConfig('gallery')->getPref();
+		$plugPrefs = $this->plugPref;
 		$orderBy = varset($plugPrefs['orderby'], 'media_id DESC');
 
 		$imageQry = (empty($cat) || $cat==1) ? "gallery_image|gallery_image_1|gallery_1" : 'gallery_' . $cat . '|gallery_image_' . $cat;
