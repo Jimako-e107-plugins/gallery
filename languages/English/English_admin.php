@@ -84,3 +84,83 @@ define("LAN_GALLERY_ADMIN_69", "Facebook");
 
 define("LAN_GALLERY_ADMIN_70", "Load prettyPhoto globally");
 define("LAN_GALLERY_ADMIN_71", "prettyPhoto attribute (hook)");
+
+//// ADMIN - MENU ///////////////////////////////////////////////
+
+define("SPG_MENU_TITLE", LAN_PLUGIN_GALLERY_TITLE . " - Options");
+define("SPG_MENU_MANAGE", "Manage Gallery ");
+define("SPG_MENU_MANAGE_001", "Manage Categories");
+define("SPG_MENU_MANAGE_002", "Manage Galleries");
+define("SPG_MENU_MANAGE_003", "Manage Images");
+define("SPG_MENU_PREFS", "Preferences");
+
+//// ADMIN - MANAGEMENT /////////////////////////////////////////
+
+define("SPG_MAN_TITLE", LAN_PLUGIN_GALLERY_TITLE . " - Management");
+define("SPG_MAN_TREELIST", "Categories & Galleries");
+define("SPG_MAN_IMAGELIST", "Gallery Images");
+define("SPG_MAN_IMAGELIST_HELP", "Drag & drop images here to upload. Click on image to edit. Drag images to order.");
+define("SPG_MAN_BTN_NEWGALLERY", "New Gallery");
+define("SPG_MAN_BTN_NEWCATEGORY", "New Category");
+
+//// ADMIN - PREFERENCES ////////////////////////////////////////
+
+define("SPG_PREFS_TITLE", LAN_PLUGIN_GALLERY_TITLE . " - Preferences");
+define("SPG_PREFS_SAVED", "Preferences Successfully Saved");
+define("SPG_PREFS_NAME", "Gallery Title");
+define("SPG_PREFS_DISPLAYTITLE", "Display Title");
+define("SPG_PREFS_THUMB", "Thumbnail Size");
+define("SPG_PREFS_THUMB_HELP", "Resize thumbnails to (width) x (height)");
+define("SPG_PREFS_THUMBCROP", "Crop Thumbnails");
+define("SPG_PREFS_THUMBCROP_HELP", "Resize thumbnails and crop or just resize");
+define("SPG_PREFS_IMAGE", "Images Size");
+define("SPG_PREFS_IMAGE_HELP", "Resize Images to (width) x (height)");
+define("SPG_PREFS_IMAGECROP", "Crop Images");
+define("SPG_PREFS_IMAGECROP_HELP", "Resize images and crop or just resize");
+define("SPG_PREFS_PERROW", "Thumbnails Per Row");
+define("SPG_PREFS_PERPAGE", "Thumbnails Per Page");
+define("SPG_PREFS_DESCRIPTION", "Welcome Text");
+define("SPG_PREFS_DESCRIPTION_HELP", "Displays on the first Page");
+define("SPG_PREFS_BTNSAVE", "Save Preferences");
+
+//// JS - MANAGEMENT ////////////////////////////////////////////
+
+define("SPG_JS_NEWGALLERYTITLE", "New Gallery");
+define("SPG_JS_BTN_CREATEGALLERY", "Create Gallery");
+ 
+define("SPG_JS_NAME", "Name");
+define("SPG_JS_CATEGORY", "Category");
+define("SPG_JS_SUMMARY", "Summary");
+define("SPG_JS_DESCRIPTION", "Description");
+define("SPG_JS_ACTIVE", "Active");
+ 
+define("SPG_JS_SELECT_NONE", "None");
+define("SPG_JS_RENAME", "Rename File");
+define("SPG_JS_GALLERY", "Gallery");
+
+define("SPG_JS_CONFIRMDELETE", "These items will be permanently deleted and cannot be recovered. Are you sure?");
+
+define("SPG_JS_BTN_DELETEGALLERY", "Delete Gallery");
+define("SPG_JS_DELETEGALLERYTITLE", "Confirm Deletion of Gallery");
+
+define("SPG_JS_BTN_DELETECATGEORY", "Delete Category");
+define("SPG_JS_DELETECATEGORYTITLE", "Confirm Deletion of Category");
+
+define("SPG_JS_BTN_SAVEIMAGE", "Save Image");
+define("SPG_JS_EDITIMAGETITLE", "Edit Image Details");
+
+define("SPG_JS_BTN_DELETEIMAGE", "Delete Image");
+define("SPG_JS_DELETEIMAGETITLE", "Confirm Deletion of Image");
+
+define("SPG_JS_FILEUPLOADTITLE", "File Upload Progress");
+define("SPG_JS_FILEUPLOADHELP", "% upload of file ");
+
+/////////////////////////////////////////////////////////////////
+
+define("SPG_CG_CREATED", "Created");
+define("SPG_CG_FRONTEND_PAGE", "Frontend Page");
+define("SPG_CG_GENERAL", "General");
+
+define("SPG_CG_DISPLAY_BREADCRUMBS", "Display Breadcrumbs");
+define("SPG_CG_DISPLAY_BREADCRUMBS_HELP", "Set this off if your theme uses magic shortcode in gallery layout");
+
