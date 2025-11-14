@@ -35,10 +35,10 @@ class galleries_ui extends e_admin_ui
 	///protected $listOrder		= 'Sort,gallery_order ';
 
 	protected $fields 		= array(
-		'checkboxes'              => array('title' => '', 'type' => null, 'data' => null, 'width' => '5%', 'thclass' => 'center', 'forced' => 'value', 'class' => 'center', 'toggle' => 'e-multiselect', 'readParms' => [], 'writeParms' => [],),
+		'checkboxes'             => array('title' => '', 'type' => null, 'data' => null, 'width' => '5%', 'thclass' => 'center', 'forced' => 'value', 'class' => 'center', 'toggle' => 'e-multiselect', 'readParms' => [], 'writeParms' => [],),
 		'gallery_id'             => array('title' => LAN_ID, 'type' => 'number', 'data' => 'int', 'width' => '5%', 'readParms' => [],),
 		'gallery_title'          => array('title' => SPG_JS_NAME, 'type' => 'method', 'data' => 'safestr', 'readParms' => [], 'writeParms' => [], 'thclass' => 'left',),
-		'gallery_image'   => array('title' => LAN_IMAGE, 'type' => 'image', 'data' => 'safestr',  'readParms' => 'thumb=80x80', 'writeParms' => [], 'thclass' => 'left',),
+		'gallery_image'   		 => array('title' => LAN_IMAGE, 'type' => 'image', 'data' => 'safestr',  'readParms' => 'thumb=80x80', 'writeParms' => [], 'thclass' => 'left',),
 		'gallery_summary'        => array('title' => SPG_JS_SUMMARY, 'type' => 'textarea', 'data' => 'safestr', 'readParms' => [], 'writeParms' => [], 'thclass' => 'left',),
 		'gallery_description'    => array('title' => SPG_JS_DESCRIPTION, 'type' => 'bbarea', 'data' => 'str', 'width' => '40%', 'readParms' => [], 'writeParms' => [], 'thclass' => 'left',),
 		'gallery_active'         => array('title' => SPG_JS_ACTIVE, 'type' => 'boolean', 'data' => 'int', 'batch' => true, 'inline' => true, 'readParms' => [], 'writeParms' => [], 'thclass' => 'left',),
@@ -58,7 +58,7 @@ class galleries_ui extends e_admin_ui
 
 		//$this->fields['gallery_title']['writeParms']['size'] = "block-level"; method
 		 
-		$this->fields['summary']['writeParms']['size'] = "block-level";
+		$this->fields['gallery_summary']['writeParms']['size'] = "block-level";
 		$this->fields['gallery_description']['writeParms']['size'] = "tiny";  //large, medium, small
 		$this->fields['gallery_description']['writeParms']['template'] = "admin";
  

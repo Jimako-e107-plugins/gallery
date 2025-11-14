@@ -1,4 +1,4 @@
- CREATE TABLE `gallery_cat` (
+ CREATE TABLE `gallery` (
  `gallery_id` INT(10) NOT NULL auto_increment,
  `gallery_category` INT(11) NOT NULL DEFAULT '0',
  `gallery_title` VARCHAR(254) NOT NULL DEFAULT '',

@@ -4,10 +4,10 @@
 	<description lan="LAN_PLUGIN_GALLERY_DIZ">This plugin is a simple gallery system for e107</description>
 	<category>content</category>
 	<adminLinks>
-		<link url='admin_gallery.php' description='LAN_CONFIGURE' icon='images/gallery_32.png' iconSmall='images/gallery_16.png' primary='true' >LAN_CONFIGURE</link>		
+		<link url='admin/admin_galleries.php' description='LAN_CONFIGURE' icon='images/gallery_32.png' iconSmall='images/gallery_16.png' primary='true' >LAN_CONFIGURE</link>		
 	</adminLinks>
 	<siteLinks>
-		<link url="{e_PLUGIN}gallery/gallery.php" sef='index' perm="everyone" >LAN_PLUGIN_GALLERY_TITLE</link>
+		<link url="{e_PLUGIN}gallery/admin/admin_config.php" sef='index' perm="everyone" >LAN_PLUGIN_GALLERY_TITLE</link>
 	</siteLinks>	
 	<mainPrefs>
 	</mainPrefs>
@@ -15,8 +15,6 @@
 		<category type="image" sef="gallery-1" perm="everyone" image='{e_PLUGIN}gallery/images/butterfly.jpg'>Gallery 1</category>
 	</mediaCategories>
 	<pluginPrefs>
-		<pref name="popup_w">800</pref>	
-		<pref name="popup_h">800</pref>	
 		<pref name="slideshow_category">1</pref>
 		<pref name="slideshow_duration">1000</pref>
 		<pref name="slideshow_auto">1</pref>
@@ -45,7 +43,6 @@
 		<pref name="pp_overlay_gallery">0</pref>
 		<pref name="pp_keyboard_shortcuts">1</pref>
 		<pref name="pp_ie6_fallback">1</pref>
-
 		<pref name="display_breadcrumbs">1</pref>
 		
 	</pluginPrefs>

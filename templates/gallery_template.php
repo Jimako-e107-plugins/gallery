@@ -9,53 +9,95 @@
  * Templates for "gallery" plugin.
  */
 
+/* --------------------------------------------------------------
+   BOOTSTRAP DETECTION (keep exactly as you have it)
+   -------------------------------------------------------------- */
+$bs       = deftrue('BOOTSTRAP');
+$isBs5    = ($bs === true || $bs === 5);
+$isBs4    = ($bs === 4);
+$isBs3    = ($bs === 2 || $bs === 3);
+$isLegacy = !$bs;
+
+/* --------------------------------------------------------------
+   COMMON CLASSES (keep these – they are fine)
+   -------------------------------------------------------------- */
+$cardClass = $isBs5 ? 'card shadow-sm' : 'thumbnail';
+$btnClass  = $isBs5 ? 'btn btn-outline-secondary' : 'btn btn-default';
+$gx        = $isBs5 ? 'g-4' : '';
+
+/* --------------------------------------------------------------
+   READ PREFERENCE – images per row on large screens
+   -------------------------------------------------------------- */
+$plugPrefs = e107::getPlugConfig('gallery')->getPref();
+$perRowLg  = max(2, min(6, (int)varset($plugPrefs['perrow'], 3)));   // 2-6 only
+$lgWidth   = 12 / $perRowLg;                                        // 6,4,3,2
+
+/* --------------------------------------------------------------
+   BUILD RESPONSIVE COLUMN CLASSES
+   -------------------------------------------------------------- */
+if ($isBs5) {
+    // BS5: mobile = 2 cols, large = $perRowLg cols
+    $imageColClass = " col-lg-{$lgWidth}";
+} else {
+    // BS3/BS4: mobile = 2 cols, tablet = 3 cols, large = $perRowLg cols
+    $imageColClass = "col-xs-6 col-sm-4 col-md-{$lgWidth}";
+}
+
+
 $GALLERY_TEMPLATE['list']['caption'] = '{GALLERY_CAPTION}';
 
 $GALLERY_TEMPLATE['list']['start'] = '{GALLERY_BREADCRUMB}
-<div class="row gallery gx-3">
-';
+<div class="row"> {MAIN_GALLERY_DESCRIPTION} </div>
+<div class="row gallery-list ' . ($isBs5 ? 'g-4' : '') . '">';
+ 
 
 $GALLERY_TEMPLATE['list']['item'] = '
-	<div class="span2 col-xs-6 col-md-4">
-		<div class="card h-100 thumbnail">
-			{GALLERY_IMAGE_THUMB: w=300&h=200&class=card-img-top img-fluid img-responsive}
-			<div class="card-footer">
-			<h5>{GALLERY_IMAGE_CAPTION}</h5>
-			</div>
-		</div>
-	</div>
+    <div class="' . $imageColClass . ' mb-4">
+        <div class="' . ($isBs5 ? 'card shadow-sm' : 'thumbnail') . ' h-100 hover-shadow">
+            {GALLERY_IMAGE_THUMB: w=400&h=300&crop=1&class=' . ($isBs5 ? 'card-img-top' : 'img-responsive') . '}
+            <div class="' . ($isBs5 ? 'card-body d-flex flex-column' : 'caption') . '">
+                <h5 class="card-title mb-0">{GALLERY_IMAGE_CAPTION}</h5>
+            </div>
+        </div>
+    </div>
 ';
 
 $GALLERY_TEMPLATE['list']['end'] = '
 </div>
-<div class="center mt-3">
-	<div class="gallery-list-nextprev">{GALLERY_NEXTPREV}</div>
-	<div class="gallery-list-back">
-		<a class="btn btn-default btn-secondary" href="{GALLERY_BASEURL}">{LAN=BACK}</a>
-	</div>
+<div class="text-center mt-4">
+    <div class="gallery-list-nextprev d-inline-block">{GALLERY_NEXTPREV}</div>
+    <div class="gallery-list-back d-inline-block ms-3">
+        <a class="' . $btnClass . '" href="{GALLERY_BASEURL}">{LAN=BACK}</a>
+    </div>
 </div>
 ';
 
 // Bootstrap3 Compatible.
-$GALLERY_TEMPLATE['cat']['caption'] = '{GALLERY_CAPTION}';
+$GALLERY_TEMPLATE['cat']['caption'] = '{MAIN_GALLERY_CAPTION}';
 
 $GALLERY_TEMPLATE['cat']['start'] = '{GALLERY_BREADCRUMB}
-<div class="row gallery-cat gx-3">
-';
+<div class="row gallery-cat ' . $gx . '">';
 
-$GALLERY_TEMPLATE['cat']['item'] = '
-	<div class="span3 col-xs-6 col-md-4">
-		<div class="card h-100">
-			{GALLERY_CAT_THUMB: w=300&h=200&class=card-img-top img-fluid img-responsive}
-			<div class="card-footer">
-			<h5>{GALLERY_CAT_TITLE}</h5>
-			</div>
-		</div>
-	</div>
+$GALLERY_TEMPLATE['cat']['item']    = '
+    <div class="' . ($isBs5 ? 'col-6 col-md-4 col-lg-3' : 'col-xs-6 col-sm-4') . ' mb-4">
+        <a href="{GALLERY_CAT_URL}" class="text-decoration-none">
+            <div class="' . $cardClass . ' h-100 text-center hover-shadow">
+                {GALLERY_CAT_THUMB: w=400&h=300&crop=1&class=' . ($isBs5 ? 'card-img-top' : 'img-responsive') . '}
+                <div class="card-body">
+                    <h5 class="card-title">{GALLERY_CAT_TITLE}</h5>
+                </div>
+            </div>
+        </a>
+    </div>
 ';
 
 $GALLERY_TEMPLATE['cat']['end'] = '
 </div>
+<style>
+.gallery-cat h5 {
+margin: 0 0 0 0;
+}
+</style>
 ';
 
 // {GALLERY_SLIDESHOW=X}  X = Gallery Category. Default: 1 (ie. 'gallery_1') Overrides preference in admin. 

@@ -48,7 +48,10 @@ class gallery
 	function __construct()
 	{
 		 
-		$this->catList =  e107::getDb()->retrieve('gallery', "*", "`gallery_active`=1", true, 'gallery_sef');
+		$where  = " gallery_class IN (" . USERCLASS_LIST . ") ";
+ 		$where .= " AND gallery_active=1 ORDER BY gallery_order ";
+
+		$this->catList =  e107::getDb()->retrieve('gallery', "*",$where, true, 'gallery_sef');
  
 		if((vartrue($_GET['cat'])) && isset($this->catList[$_GET['cat']]))
 		{
@@ -100,21 +103,24 @@ class gallery
 
 	function showImages($gallery = NULL)
 	{
-
-		$cat = $gallery['media_cat_category'];
+ 
+		$cat       = $gallery['gallery_sef'];
 		$plugPrefs = e107::getPlugConfig('gallery')->getPref();
-		$mes = e107::getMessage();
-		$tp = e107::getParser();
-		$template = $this->getTemplate();
-		$template = array_change_key_case($template);
-		$sc = e107::getScBatch('gallery', true);
+		$mes       = e107::getMessage();
+		$tp        = e107::getParser();
+		$template  = $this->getTemplate();
+		$template  = array_change_key_case($template);
+		$sc        = e107::getScBatch('gallery', true);
 
-		if(defset('BOOTSTRAP') === true || defset('BOOTSTRAP') === 2) // Convert bootsrap3 to bootstrap2 compat.
-		{
-			$template['list_start'] = str_replace('row', 'row-fluid', $template['list_start']);
-		}
 
-		$totalImages = e107::getMedia()->countImages($cat);
+		// -----------------------------------------------------------------
+		// 1. Pagination settings
+		// -----------------------------------------------------------------
+
+		$where = "WHERE  image_gallery = ". $gallery['gallery_id']  . " AND `image_active`=1 ";
+		$list =  e107::getDb()->retrieve('gallery_image', "*", $where, true ) ;
+		$totalImages = count($list);
+ 
 		$perPage     = max(1, varset($plugPrefs['perpage'], 12));
 		// 1-based page number
 		$currentPage = max(1, intval($_GET['page'] ?? 1));
@@ -128,23 +134,26 @@ class gallery
 		$sc->page    = $currentPage;                 // <-- important for your own shortcode
 		$sc->from    = $offset;                      // <-- correct offset for getImages()
 
-
-		// $sc->total = e107::getMedia()->countImages($cat);
-		// $sc->amount = varset($plugPrefs['perpage'], 12);
-		// $sc->curCat = $cat;
-		// $sc->from = ($_GET['page']) ? intval($_GET['page']) : 0;
+		$sc->curCat = $gallery;
+  
 		$sc->breadcrumb();
 
-		$orderBy = varset($plugPrefs['orderby'], 'media_id DESC');
+		$orderBy = varset($plugPrefs['orderby'], 'image_id DESC');
 
-		$list = e107::getMedia()->getImages($cat, $sc->from, $sc->amount, null, $orderBy);
-		$catname = $tp->toHTML($this->catList[$cat]['media_cat_title'], false, 'defs');
+		$where = "WHERE  image_gallery = ". $gallery['gallery_id']  . " AND `image_active`=1 ";
+		$where  .= " ORDER BY " . $orderBy;	
+		$where  .= " LIMIT ". $sc->from. " ,".$sc->amount;	
+ 
+		$list =  e107::getDb()->retrieve('gallery_image', "*", $where, true ) ;
+		//$list = e107::getMedia()->getImages($cat, $sc->from, $sc->amount, null, $orderBy);  
+		$catname = $tp->toHTML($this->catList[$cat]['gallery_title'], false, 'defs');
  
 		$inner = "";
-		
+ 
 		foreach($list as $row)
 		{
-			$row['media_cat_sef'] = $gallery['media_cat_sef'];
+ 			$row['gallery_title'] = $gallery['gallery_title'];
+			$row['gallery_sef'] = $gallery['gallery_sef'];
 			$sc->setVars($row);
 			$inner .= $tp->parseTemplate($template['list']['item'], true, $sc);
 		}
