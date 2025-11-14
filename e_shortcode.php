@@ -146,7 +146,7 @@ class gallery_shortcodes extends e_shortcode
 
 	/**
 	 * All possible parameters
-	 * {GALLERY_THUMB=w=200&h=200&thumburl&thumbsrc&imageurl&orig}
+	 * {GALLERY_IMAGE_THUMB=w=200&h=200&thumburl&thumbsrc&imageurl&orig}
 	 * w and h - optional width and height of the thumbnail
 	 * thumburl - return only the URL of the destination image (large one)
 	 * thumbsrc - url to the thumb, as it's written in the src attribute of the image
@@ -304,16 +304,11 @@ class gallery_shortcodes extends e_shortcode
 		$slideCat = $this->plugPref['slideshow_category'];
 		$cat = (!empty($parm['category'])) ? $parm['category'] : vartrue($slideCat, false); //TODO Separate pref?
 
-		$tmpl = e107::getTemplate('gallery', 'gallery');
 		$limit = vartrue($parm['limit'], 6);
 
-		$plugPrefs = $this->plugPref;
-		$orderBy = varset($plugPrefs['orderby'], 'image_id DESC');
-
-		$imageQry = (empty($cat) || $cat==1) ? "gallery_image|gallery_image_1|gallery_1" : 'gallery_' . $cat . '|gallery_image_' . $cat;
-
-
-		$list =  e107::getDb()->retrieve('gallery_images', "*", "`gallery_image_active`=1", true);
+		$where = "WHERE  image_gallery = ". $cat  . " AND `image_active`=1 ";
+		$list =  e107::getDb()->retrieve('gallery_image', "*", $where, true ) ;
+ 
 		//$list = e107::getMedia()->getImages($imageQry, 0, $limit, null, $orderBy);
 
 		if(count($list) < 1 && vartrue($parm['placeholder']))
@@ -345,7 +340,7 @@ class gallery_shortcodes extends e_shortcode
 
 			if(empty($template['item']))
 			{
-				$text .= $ns->tablerender('', $this->sc_gallery_thumb('class=gallery_thumb img-responsive img-fluid img-home-portfolio'), 'gallery_portfolio', true);
+				$text .= $ns->tablerender('', $this->sc_gallery_image_thumb('class=gallery_thumb img-responsive img-fluid img-home-portfolio'), 'gallery_portfolio', true);
 			}
 			else
 			{
@@ -386,7 +381,8 @@ class gallery_shortcodes extends e_shortcode
         
 		//$list          = e107::getMedia()->getImages('gallery_image|gallery_image_' . $this->sliderCat, 0, $limit, null, $orderBy);
 
-		$list =  e107::getDb()->retrieve('gallery_images', "*", "`gallery_image_active`=1", true);
+		$where = "WHERE  image_gallery = ". $this->sliderCat  . " AND `image_active`=1 ";
+		$list =  e107::getDb()->retrieve('gallery_image', "*", $where, true ) ;
 
 		$tmpl          = e107::getTemplate('gallery', 'gallery');
 		$tmpl          = array_change_key_case($tmpl); // change template key to lowercase (BC fix)

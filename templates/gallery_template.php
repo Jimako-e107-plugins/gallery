@@ -229,13 +229,9 @@ $GALLERY_TEMPLATE['prettyphoto']['social_item'] = '
 
 
 
+$GALLERY_TEMPLATE['portfolio'] = $GALLERY_TEMPLATE['list']; 
 
-
-
-/*
-
-$GALLERY_TEMPLATE['portfolio']['start']     = '<-- start portfolio -->';
-$GALLERY_TEMPLATE['portfolio']['item']      = '<img src="{GALLERY_IMAGE_THUMB: w=1080&h=720&thumbsrc}" class="img-responsive" alt="{GALLERY_IMAGE_CAPTION=text}">';
-$GALLERY_TEMPLATE['portfolio']['end']       = '<-- end portfolio -->';
-
-*/
+$GALLERY_TEMPLATE['portfolio']['start'] = ' 
+<div class="row gallery-list ' . ($isBs5 ? 'g-4' : '') . '">';
+ 
+ 

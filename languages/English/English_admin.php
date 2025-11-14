@@ -101,7 +101,8 @@ define("SPG_MAN_TREELIST", "Categories & Galleries");
 define("SPG_MAN_IMAGELIST", "Gallery Images");
 define("SPG_MAN_IMAGELIST_HELP", "Drag & drop images here to upload. Click on image to edit. Drag images to order.");
 define("SPG_MAN_BTN_NEWGALLERY", "New Gallery");
-define("SPG_MAN_BTN_NEWCATEGORY", "New Category");
+define("SPG_MAN_BTN_NEWIMAGE", "New Image");
+
 
 //// ADMIN - PREFERENCES ////////////////////////////////////////
 
@@ -125,9 +126,6 @@ define("SPG_PREFS_BTNSAVE", "Save Preferences");
 
 //// JS - MANAGEMENT ////////////////////////////////////////////
 
-define("SPG_JS_NEWGALLERYTITLE", "New Gallery");
-define("SPG_JS_BTN_CREATEGALLERY", "Create Gallery");
- 
 define("SPG_JS_NAME", "Name");
 define("SPG_JS_CATEGORY", "Category");
 define("SPG_JS_SUMMARY", "Summary");
@@ -159,6 +157,7 @@ define("SPG_JS_FILEUPLOADHELP", "% upload of file ");
 
 define("SPG_CG_CREATED", "Created");
 define("SPG_CG_FRONTEND_PAGE", "Frontend Page");
+define("SPG_CG_CATEGORY_PAGE", "Category Page");
 define("SPG_CG_GENERAL", "General");
 
 define("SPG_CG_DISPLAY_BREADCRUMBS", "Display Breadcrumbs");
