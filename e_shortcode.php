@@ -279,6 +279,7 @@ class gallery_shortcodes extends e_shortcode
 		);
 	}
 
+
 	function sc_gallery_slideshow($parm = '')
 	{
 		$slideCat = $this->plugPref['slideshow_category'];
@@ -383,7 +384,7 @@ class gallery_shortcodes extends e_shortcode
 
 		$where = "WHERE  image_gallery = ". $this->sliderCat  . " AND `image_active`=1 ";
 		$list =  e107::getDb()->retrieve('gallery_image', "*", $where, true ) ;
-
+ 
 		$tmpl          = e107::getTemplate('gallery', 'gallery');
 		$tmpl          = array_change_key_case($tmpl); // change template key to lowercase (BC fix)
 		$tmpl_key      = vartrue($parms['template'], 'slideshow_slide_item');
